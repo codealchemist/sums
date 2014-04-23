@@ -1,0 +1,247 @@
+FORMAT: 1A
+HOST: http://sums.brainpowered.com.ar
+
+# SUMS
+SUMS API reference.
+This API will allow you to create custom apps to interface with SUMS as a service. 
+
+# POST /user
+Updates an existing user.
+
++ Request (applicatio/json)
+
+        {
+            "name": "Joe Satriani",
+            "email": "joe@sums",
+            "password": "newpass"
+        }
+        
++ Response 204
+
+# PUT /signup
+Used to signup new users.
+
++ Request (application/json)
+
+        {
+            "email": "email@email",
+            "password": "password",
+            "name": "User Name"
+        }
+    
++ Response 201 (application/json)
+
+        {
+            "_id": "5339d688c5325f804d835a9e"
+        }
+
+# POST /login
+Used to login to the app.
+
++ Request (application/json)
+
+        {
+            "email": "email@email.com",
+            "password": "password"
+        }
+
++ Response 200 (application/json)
+
+        {
+            "_id": "5339d688c5325f804d835a9e",
+            "name": "User Name",
+            "email": "email@email",
+            "sums": [
+                {
+                    "_id": "533aaf1df263a0174d0d5dae",
+                    "version": 1,
+                    "collaborators": [
+                        {
+                            "_id": "5339d688c5325f804d835a9e",
+                            "lastCollaboration": "2014-04-01T12:45:19.806Z",
+                            "value": 45.5
+                        }
+                    ],
+                    "created": "2014-04-01T12:13:02.415Z",
+                    "status": "active",
+                    "title": "Getting money to buy new t-shirts for the team",
+                    "notes": "We reached the objective. Yay!",
+                    "tokens": {
+                        "view": null,
+                        "collaborate": null
+                    },
+                    "total": 245.5
+                }
+            ],
+            "passwordRecovery": {
+                "date": "2014-04-01T12:45:19.806Z",
+                "token": null,
+                "recoveries": []
+            }
+        }
+    
+# POST /refresh
+Used to refresh sums data client side.
+The list of active sums is sent to server with current version for each one.
+The server responds with the updated sums only, if any.
+If there are no updates the server will respond with a 204 HTTP status code.
+
++ Request (application/json)
+
+        [
+            {
+                "_id": "5339d688c5325f804d835a9e",
+                "version": 1
+            }
+        ]
+        
++ Response 204 
+
++ Response 200 (application/json)
+
+        [
+            {
+                "_id": "533aaf1df263a0174d0d5dae",
+                "version": 1,
+                "collaborators": [
+                    {
+                        "_id": "5339d688c5325f804d835a9e",
+                        "lastCollaboration": "2014-04-01T12:45:19.806Z",
+                        "value": 45.5
+                    }
+                ],
+                "createdDate": "2014-04-01T12:13:02.415Z",
+                "status": "active",
+                "title": "Getting money to buy new t-shirts for the team",
+                "notes": "We reached the objective. Yay!",
+                "tokens": {
+                    "view": null,
+                    "collaborate": null
+                },
+                "total": 245.5
+            }
+        ]
+
+# /sums
+The core of the app.
+Sums are the main object we share and work on.
+
+## PUT
+Creates a new sum.
+Collaborators already using the app will be added by user id.
+The ones not using the app will be invited using their email address.
+Server answers with the id of the newly created sum.
+
++ Request (application/json)
+
+        {
+            "title": "A new sum",
+            "description": "Asado weekend",
+            "collaborators": [
+                "5339d688c5325f804d835a9e",
+                "friend@mail"
+            ],
+            "permissions": {
+                "view": [
+                    "5339d688c5325f804d835a9e"
+                ],
+                "collaborate": [
+                    "friend@mail"
+                ]
+            }
+        }
+
++ Response 201 (application/json)
+
+        {
+            "_id": "533f1c5381fcc4058159521e"
+        }
+        
+## POST
+Updates existing sum.
+Will update "updatedDate" to current date.
+
++ Request (application/json)
+
+        {
+            "_id": "533ab5dbf263a0174d0d5daf",
+            "title": "The Asado!",
+            "description": "This weekend we'll make an asado to honor the team!",
+            "collaborators": [
+                "5339d688c5325f804d835a9e",
+                "friend@mail",
+                "agus@sums"
+            ],
+            "tokens": {
+                "view": [
+                    {
+                        "name": "a-team",
+                        "token": "3540073K806G325I9Gc4P2dFIbH9NRl7AzrELLd2x0"
+                    }
+                ],
+                "collaborate": [
+                    {
+                        "name": "John",
+                        "token": "2135073KG062321I90c4j21lIMHNN1l25zg01Od2C1"
+                    }
+                ]
+            }
+        }
+        
++ Response 200 (application/json)
+
+        {
+            "_id": "533f1c5381fcc4058159521e"
+        }
+
+# /sums/{id}
+## GET
+Returns requested sum.
+Used to display sum to collaborators/viewers with a shared link.
+
++ Request (application/json)
+
+        {
+            "_id": "533f1c5381fcc4058159521e"
+        }
+
++ Response 200 (application/json)
+
+        {
+            "_id": "533f1c5381fcc4058159521e",
+            "owner": "5339d688c5325f804d835a9e",
+            "version": 1,
+            "title": "Asado!",
+            "notes": "Asado weekend FTW!",
+            "total": 245.5,
+            "created": "2014-04-01T12:13:02.415Z",
+            "lastUpdated": "2014-04-01T12:31:33.939Z",
+            "collaborators": [
+                "5339d688c5325f804d835a9e",
+                "friend@mail.com"
+            ],
+            "tokens": {
+                "view": [],
+                "collaborate": [
+                    {
+                        "name": "friend@mail.com",
+                        "token": ""
+                    },
+                    {
+                        "name": "Joe",
+                        "token": ""
+                    }
+                ]
+            }
+        }
+
+## DELETE
+Deletes passed sum id.
+
++ Request (application/json)
+
+        {
+            "_id": "533f1c5381fcc4058159521e"
+        }
+        
++ Response 204

@@ -1,0 +1,6 @@
+{
+    "require": {
+        "alexbilbie/mongoqb": "*",
+        "twig/twig": "1.*"
+    }
+}

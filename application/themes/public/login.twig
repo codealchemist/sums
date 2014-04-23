@@ -1,0 +1,52 @@
+{% extends "__layouts/public.twig" %}
+
+{% block content %}
+
+<header class="navbar navbar-static-top bs-docs-nav" id="main-header" role="banner">
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">{{ appName }}</a>
+            </div>
+            
+            <form class="navbar-form navbar-right">
+                <div class="form-group">
+                    <input id="email" type="text" class="form-control" placeholder="email">
+                    <input id="password" type="password" class="form-control" placeholder="password">
+                    <input type="button" id="login-button" class="btn btn-primary" value="login" />
+                </div>
+            </form>
+        </div><!-- /.container-fluid -->
+    </nav>
+</header>
+
+<section id="home-view" class="main smooth" role="main">
+    <div class="section-box">
+        <h1>Welcome to SUMS!</h1>
+        <h3>Collaborative totals made easy!</h3>
+        <div class="spacer-normal"></div>
+
+        <div class="panel panel-title panel-dark">
+            <div class="panel-body">
+                <p class="inline">Thanks for visiting us!</p>
+                <p class="inline">You can </p>
+                <input type="button" id="show-register-button" class="btn btn-success inline" value="Join SUMS" />
+                <p class="inline">to start saving your sums.</p>
+                <br /><br />
+
+                <p class="inline">Or you can just </p>
+                <input type="button" id="new-sum-button" class="btn btn-default inline" value="Create a new sum" />
+                <p class="inline">to start enjoying sums right now!</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

@@ -1,0 +1,17 @@
+AuthName "Secure Area"
+#AuthType Basic
+#AuthUserFile /data/certs/.htpasswd-admin
+#require valid-user
+
+Header add Access-Control-Allow-Origin "*"
+Header add Access-Control-Allow-Headers "origin, x-requested-with, content-type"
+Header add Access-Control-Allow-Methods "PUT, GET, POST, DELETE, OPTIONS"
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !\.css|\.js|\.jpg|\.png|\.gif$
+    RewriteCond %{REQUEST_FILENAME} !beat\.html$
+    RewriteRule ^(.*)$ index.php/api$1 [QSA,L]
+</IfModule>
